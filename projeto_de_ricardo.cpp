@@ -190,25 +190,75 @@ lista_de_inscritos *pos(descritor_inscritos *listas_dos_participantes_do_sorteio
     }
     return aux;
 }
+
+lista_de_inscritos *v(descritor_inscritos *listas_dos_participantes_do_sorteio,descritor_inscritos *lista_de_sorteados){
+    lista_de_inscritos *aux=listas_dos_participantes_do_sorteio->ini;
+    while (aux!=NULL)
+    {   int cont=0;
+        lista_de_inscritos*aux2=lista_de_sorteados->ini;
+        while (aux2!=NULL)
+        {
+            if (aux->nome==aux2->nome)
+            {
+                cont++;
+            }
+            aux2=aux2->prox;
+        }
+        if (cont==1)
+        {
+            aux=aux->prox;
+        }
+        else{
+            return aux;
+        }
+    }
+}
+
 void add_sorteados(descritor_inscritos *listas_dos_participantes_do_sorteio,descritor_inscritos *lista_de_sorteados){
-    srand(time(0));
-   while (lista_de_sorteados->tam<3){
+    if (listas_dos_participantes_do_sorteio->tam==1)
+    {
+        lista_de_sorteados=listas_dos_participantes_do_sorteio;
+    }
+    
+    else if (listas_dos_participantes_do_sorteio->tam==2)
+    {   srand(time(NULL));
+        while (lista_de_sorteados->tam<1)
+        {
+            int cont=rand()%listas_dos_participantes_do_sorteio->tam;        
+            if (verificar(listas_dos_participantes_do_sorteio,lista_de_sorteados,cont)==true)
+            {
+            lista_de_inscritos *nome=pos(listas_dos_participantes_do_sorteio,cont);
+            adicionar_inscritos(lista_de_sorteados,nome->nome,nome->email,nome->num_de_ins);
+            }
+        }
+        lista_de_inscritos *p=v(listas_dos_participantes_do_sorteio,lista_de_sorteados);
+        adicionar_inscritos(lista_de_sorteados,p->nome,p->email,p->num_de_ins);
+    }
+    else if (listas_dos_participantes_do_sorteio->tam==3)
+    {   srand(time(NULL));
+        while (lista_de_sorteados->tam<2)
+        {
+            int cont=rand()%listas_dos_participantes_do_sorteio->tam;        
+            if (verificar(listas_dos_participantes_do_sorteio,lista_de_sorteados,cont)==true)
+            {
+            lista_de_inscritos *nome=pos(listas_dos_participantes_do_sorteio,cont);
+            adicionar_inscritos(lista_de_sorteados,nome->nome,nome->email,nome->num_de_ins);
+            }
+        }
+        lista_de_inscritos *p=v(listas_dos_participantes_do_sorteio,lista_de_sorteados);
+        adicionar_inscritos(lista_de_sorteados,p->nome,p->email,p->num_de_ins);
+    }
+    else{
+        srand(time(NULL));
+        while (lista_de_sorteados->tam<3){
         int cont=rand()%listas_dos_participantes_do_sorteio->tam;        
         if (verificar(listas_dos_participantes_do_sorteio,lista_de_sorteados,cont)==true)
         {
             lista_de_inscritos *nome=pos(listas_dos_participantes_do_sorteio,cont);
             adicionar_inscritos(lista_de_sorteados,nome->nome,nome->email,nome->num_de_ins);
         }
-    }   
-}
-
-
-bool verificar_se_averar_sorteio(descritor_inscritos *lista_de_sorteados){
-    if (lista_de_sorteados->tam<=3)
-    {
-        return false;
+        }  
     }
-    return true;
 }
 
 void mostrar(descritor_inscritos *lista){
@@ -266,12 +316,6 @@ int main(){
     descritor_inscritos *listas_dos_participantes_do_sorteio=porcetagem_de_preseca(matriz,listas_dos_inscritos,lista_das_atividades);
     descritor_inscritos *lista_de_sorteados=criar_lista_de_insc();
     add_sorteados(listas_dos_participantes_do_sorteio,lista_de_sorteados);
-    if (verificar_se_averar_sorteio(lista_de_sorteados)==false)
-    {
-        cout<<"o sorteio não ocorerar pois o numero de pessoas e insuficiente"<<endl;
-    }
-    else{
-        mostrar(lista_de_sorteados);
-    }
+    mostrar(lista_de_sorteados);
     return 0;
 }
