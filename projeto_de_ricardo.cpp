@@ -4,171 +4,180 @@
 
 using namespace std;
 
-struct  lista_de_inscritos
-{
-    string nome,email;
-    int num_de_ins;
-    lista_de_inscritos *ant;
-    lista_de_inscritos *prox;
+struct lista_de_participantes{
+	string nome;
+	string email;
+	int numero_de_inscricao;
+	lista_de_participantes *ant;
+	lista_de_participantes *prox;
 };
 
-struct  descritor_inscritos
-{
-    lista_de_inscritos *ini;
-    lista_de_inscritos *fim;
-    int tam;
+struct descritor_de_participantes{
+		lista_de_participantes *ini;
+		lista_de_participantes *fim;
+		int tam;
 };
 
-struct lista_de_atividades
-{
-    string atividade,tipo;
-    float hora;
-    int dia;
-    lista_de_atividades *ant;
-    lista_de_atividades *prox;
+descritor_de_participantes *criar_lista_de_participantes(){
+	descritor_de_participantes *novo=new descritor_de_participantes;
+	novo->ini=NULL;
+	novo->fim=NULL;
+	novo->tam=0;
+	return novo;
+}
+
+struct lista_de_atividades{
+	string nome_da_atividade;
+	string tipo_da_atividade;
+	float hora_da_atividade;
+	string data_da_atividade;
+	lista_de_atividades *ant;
+	lista_de_atividades *prox;
 };
 
-struct  descritos_atividades
-{
-    lista_de_atividades *ini;
-    lista_de_atividades *fim;
-    int tam;
+struct descritor_de_ativades{
+	lista_de_atividades *ini;
+	lista_de_atividades *fim;
+	int tam;
 };
 
-descritor_inscritos *criar_lista_de_insc(){
-    descritor_inscritos *novo=new descritor_inscritos;
-    novo->ini=NULL;
-    novo->fim=NULL;
-    novo->tam=0;
-    return novo;
-}
-descritos_atividades *criar_lista_de_ativid(){
-    descritos_atividades *novo=new descritos_atividades;
-    novo->ini=NULL;
-    novo->fim=NULL;
-    novo->tam=0;
-    return novo;
+descritor_de_ativades *criar_lista_de_atividades(){
+	descritor_de_ativades *novo=new descritor_de_ativades;
+	novo->ini=NULL;
+	novo->fim=NULL;
+	novo->tam=0;
+	return novo;		
 }
 
-void adicionar_inscritos(descritor_inscritos *lista_dos_inscritos,string nome,string email,int numero_de_inscrisao){
-    lista_de_inscritos *novo=new lista_de_inscritos;
-    novo->nome=nome;
-    novo->email=email;
-    novo->num_de_ins=numero_de_inscrisao;
-    novo->ant=NULL;
-    novo->prox=NULL;
-    if (lista_dos_inscritos->ini==NULL)
-    {
-        lista_dos_inscritos->ini=novo;
-        lista_dos_inscritos->fim=novo;
-        lista_dos_inscritos->tam=1;
-    }
-    else{
-        lista_dos_inscritos->fim->prox=novo;
-        novo->ant=lista_dos_inscritos->fim;
-        lista_dos_inscritos->fim=novo;
-        lista_dos_inscritos->tam++;
-    }
+void adicionar_inscricao(descritor_de_participantes *lista_de_inscricao,string nome,string email,int num){
+	lista_de_participantes *novo=new lista_de_participantes;
+	novo->nome=nome;
+	novo->email=email;
+	novo->numero_de_inscricao=num;
+	novo->ant=NULL;
+	novo->prox=NULL;
+	if(lista_de_inscricao->ini==NULL){
+		lista_de_inscricao->ini=novo;
+		lista_de_inscricao->fim=novo;
+		lista_de_inscricao->tam=1;
+	}
+	else{
+		lista_de_inscricao->fim->prox=novo;
+		novo->ant=lista_de_inscricao->fim;
+		lista_de_inscricao->fim=novo;
+		lista_de_inscricao->tam++;
+	}
 }
 
-void adicionar_atividades(descritos_atividades *listas_das_atividades,string atividade,string tipo,float hora_da_atividade,int dia_da_atividade){
-    lista_de_atividades *novo=new lista_de_atividades;
-    novo->atividade=atividade;
-    novo->tipo=tipo;
-    novo->hora=hora_da_atividade;
-    novo->dia=dia_da_atividade;
-    novo->ant=NULL;
-    novo->prox=NULL;
-    if (listas_das_atividades->ini==NULL)
-    {
-        listas_das_atividades->ini=novo;
-        listas_das_atividades->fim=novo;
-        listas_das_atividades->tam=1;
-    }
-    else{
-        listas_das_atividades->fim->prox=novo;
-        novo->ant=listas_das_atividades->fim;
-        listas_das_atividades->fim=novo;
-        listas_das_atividades->tam++;
-    }
+void adicioanr_atividade(descritor_de_ativades *lista_das_atividades,string nome,string tipo,float hora,string data){
+	lista_de_atividades *novo=new lista_de_atividades;
+	novo->nome_da_atividade=nome;
+	novo->tipo_da_atividade=tipo;
+	novo->hora_da_atividade=hora;
+	novo->data_da_atividade=data;
+	novo->ant=NULL;
+	novo->prox=NULL;
+	if (lista_das_atividades->ini==NULL)
+	{
+		lista_das_atividades->ini=novo;
+		lista_das_atividades->fim=novo;
+		lista_das_atividades->tam=1;
+	}
+	else{
+		lista_das_atividades->fim->prox=novo;
+		novo->ant=lista_das_atividades->fim;
+		lista_das_atividades->fim=novo;
+		lista_das_atividades->tam++;
+	}
 }
 
-bool **criar_matriz(descritor_inscritos *lista_dos_inscritos,descritos_atividades *lista_das_atividades){
-    bool **matriz=new bool*[lista_dos_inscritos->tam];
-    for (int i = 0; i < lista_dos_inscritos->tam; i++)
-    {
-        matriz[i]=new bool[lista_das_atividades->tam];
-    }
-    return matriz;
+bool **criar_matriz(descritor_de_participantes *lista_de_incricao,descritor_de_ativades *lista_das_atividades){
+	bool **matriz=new bool*[lista_de_incricao->tam];
+	for (int i = 0; i < lista_de_incricao->tam; i++)
+	{
+		matriz[i]=new bool[lista_das_atividades->tam];
+	}
+	return matriz;
 }
 
-void adicionar_presenca(bool **matriz,descritor_inscritos *lista_dos_inscritos,descritos_atividades *lista_das_atividas){
-    int linhas=lista_dos_inscritos->tam,linha=0;
-    string pergunta;
-    lista_de_inscritos *aux_de_incritos=lista_dos_inscritos->ini;
-    while (linha<linhas)
-    {   lista_de_atividades *aux_das_atividas=lista_das_atividas->ini;
-        int colunas=lista_das_atividas->tam,coluna=0;
-        while (coluna<colunas)
-        {
-            cout<<"digite sim se "<<aux_de_incritos->nome<<" esteve presente na atividade"<<aux_das_atividas->atividade<<"\ndigite não se "<<aux_de_incritos->nome<<" nao esteve presente na atividade "<<aux_das_atividas->atividade<<"\n"<<aux_de_incritos->nome<<"esteve presente na atividade "<<aux_das_atividas->atividade<<" no dia "<<aux_das_atividas->dia<<": ";
+void adicionar_presenca(bool **matiz_de_presenca,descritor_de_participantes *lista_de_incricao,descritor_de_ativades*lista_das_atividades){
+	lista_de_participantes *aux_de_inscritos=lista_de_incricao->ini;
+	int linha=0,linhas=lista_de_incricao->tam;
+	string pergunta;
+	while (linha<linhas)
+	{
+		lista_de_atividades *aux_de_atividade=lista_das_atividades->ini;
+		int coluna=0,colunas=lista_das_atividades->tam;
+		while (coluna<colunas)
+		{
+			cout<<"digite sim se "<<aux_de_inscritos->nome<<" esteve presente na atividade"<<aux_de_atividade->nome_da_atividade<<"\ndigite não se "<<aux_de_inscritos->nome<<" nao esteve presente na atividade "<<aux_de_atividade->nome_da_atividade<<"\n"<<aux_de_inscritos->nome<<"esteve presente na atividade "<<aux_de_atividade->nome_da_atividade<<" no dia "<<aux_de_atividade->data_da_atividade<<": ";
             cin>>pergunta;
             if (pergunta=="sim"||pergunta=="SIM"||pergunta=="nao"||pergunta=="NAO")
             {
                 if (pergunta=="SIM"||pergunta=="sim")
                 {
-                    matriz[linha][coluna]=true;
+                    matiz_de_presenca[linha][coluna]=true;
                 }
                 else{
-                    matriz[linha][coluna]=false;
+                    matiz_de_presenca[linha][coluna]=false;
                 }
                 coluna++;
-                aux_das_atividas=aux_das_atividas->prox;
+                aux_de_atividade=aux_de_atividade->prox;
             }
             else{
                 cout<<"codigo não cadastrado porafavor digite de novo"<<endl;
             }
-        }
-        linha++;
-        aux_de_incritos=aux_de_incritos->prox;
-    }
+		}
+		linha++;
+		aux_de_inscritos=aux_de_inscritos->prox;
+	}
 }
 
-descritor_inscritos  *porcetagem_de_preseca(bool **matiz,descritor_inscritos *lista_dos_inscritos,descritos_atividades *lista_das_atividades){
-    descritor_inscritos *lista_dos_inscritos_participantes_do_sorteio=criar_lista_de_insc();
-    lista_de_inscritos *aux_de_inscritos=lista_dos_inscritos->ini;
-    int linhas=lista_dos_inscritos->tam,linha=0;
-    float porcentagem_de_presenca;
-    while (linha<linhas)
-    {
-        int colunas=lista_das_atividades->tam,coluna=0,verificador_de_presenca=0;
-        while (coluna<colunas)
-        {   
-            if (matiz[linha][coluna]==true)
-            {
-                verificador_de_presenca++;
-            }
-            coluna++;
-        }
-        porcentagem_de_presenca=(verificador_de_presenca*100)/colunas;
-        if (porcentagem_de_presenca>=75)
-        {
-            adicionar_inscritos(lista_dos_inscritos_participantes_do_sorteio,aux_de_inscritos->nome,aux_de_inscritos->email,aux_de_inscritos->num_de_ins);
-        }
-        aux_de_inscritos=aux_de_inscritos->prox;
-        linha++;
-    }
-    return lista_dos_inscritos_participantes_do_sorteio;
+descritor_de_participantes *verificar_os_participantes_do_sortei(bool **matriz_de_presenca,descritor_de_participantes *lista_de_inscritos,descritor_de_ativades *lista_das_atividades){
+	descritor_de_participantes *lista_dos_participantes_do_sorteio=criar_lista_de_participantes();
+	lista_de_participantes *aux_de_participantes=lista_de_inscritos->ini;
+	for (int i = 0; i < lista_de_inscritos->tam; i++)
+	{	int cont=0;
+		for (int j = 0; j < lista_das_atividades->tam; j++)
+		{
+			if (matriz_de_presenca[i][j]==true)
+			{
+				cont++;
+			}
+			
+		}
+		float presenca=(cont*100)/lista_das_atividades->tam;
+		if (presenca>=75)
+		{
+			adicionar_inscricao(lista_dos_participantes_do_sorteio,aux_de_participantes->nome,aux_de_participantes->email,aux_de_participantes->numero_de_inscricao);
+		}
+		aux_de_participantes=aux_de_participantes->prox;
+	}
+	return lista_dos_participantes_do_sorteio;
 }
 
-bool verificar(descritor_inscritos *listas_dos_participantes_do_sorteio,descritor_inscritos *lista_de_sorteados,int num){
-    int cont=1;
-    lista_de_inscritos *aux=listas_dos_participantes_do_sorteio->ini;
-    while (cont<num)
-    {   cont++;
-        aux=aux->prox;
-    }
-    lista_de_inscritos *aux2=lista_de_sorteados->ini;
+bool validar_o_sorteio(descritor_de_participantes * lista_dos_participantes_do_sorteio){
+	if (lista_dos_participantes_do_sorteio->tam==1||lista_dos_participantes_do_sorteio->tam==2||lista_dos_participantes_do_sorteio->tam==0)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool verificar_sortei(descritor_de_participantes *listas_dos_participantes_do_sorteio,descritor_de_participantes *lista_de_sorteados,int num){
+    lista_de_participantes *aux;
+	if (num==listas_dos_participantes_do_sorteio->tam)
+	{
+		aux=listas_dos_participantes_do_sorteio->fim;
+	}
+	else{ int cont=0;
+    	aux=listas_dos_participantes_do_sorteio->ini;
+    	while (cont<num)
+    	{	cont++;
+    		aux=aux->prox;
+    	}
+	}
+    lista_de_participantes *aux2=lista_de_sorteados->ini;
     while (aux2!=NULL)
     {
         if (aux2->nome==aux->nome)
@@ -180,22 +189,28 @@ bool verificar(descritor_inscritos *listas_dos_participantes_do_sorteio,descrito
     return true;   
 }
 
-lista_de_inscritos *pos(descritor_inscritos *listas_dos_participantes_do_sorteio,int num){
-    int cont=1;
-    lista_de_inscritos *aux=listas_dos_participantes_do_sorteio->ini;
-    while (cont<num)
-    {
-        cont++;
-        aux=aux->prox;
+lista_de_participantes *pos(descritor_de_participantes *listas_dos_participantes_do_sorteio,int num){
+    lista_de_participantes *aux;
+	if (listas_dos_participantes_do_sorteio->tam==num)
+    {	
+		aux=listas_dos_participantes_do_sorteio->fim;
     }
-    return aux;
+	else{ int cont=0;
+		aux=listas_dos_participantes_do_sorteio->ini;
+    	while (cont<num)
+		{
+        	cont++;
+    		aux=aux->prox;
+		}
+	}
+	return aux;
 }
 
-lista_de_inscritos *v(descritor_inscritos *listas_dos_participantes_do_sorteio,descritor_inscritos *lista_de_sorteados){
-    lista_de_inscritos *aux=listas_dos_participantes_do_sorteio->ini;
+lista_de_participantes *v(descritor_de_participantes *listas_dos_participantes_do_sorteio,descritor_de_participantes *lista_de_sorteados){
+    lista_de_participantes *aux=listas_dos_participantes_do_sorteio->ini;
     while (aux!=NULL)
     {   int cont=0;
-        lista_de_inscritos*aux2=lista_de_sorteados->ini;
+        lista_de_participantes*aux2=lista_de_sorteados->ini;
         while (aux2!=NULL)
         {
             if (aux->nome==aux2->nome)
@@ -214,108 +229,87 @@ lista_de_inscritos *v(descritor_inscritos *listas_dos_participantes_do_sorteio,d
     }
 }
 
-void add_sorteados(descritor_inscritos *listas_dos_participantes_do_sorteio,descritor_inscritos *lista_de_sorteados){
-    if (listas_dos_participantes_do_sorteio->tam==1)
-    {
-        lista_de_sorteados=listas_dos_participantes_do_sorteio;
-    }
-    
-    else if (listas_dos_participantes_do_sorteio->tam==2)
-    {   srand(time(NULL));
-        while (lista_de_sorteados->tam<1)
-        {
-            int cont=rand()%listas_dos_participantes_do_sorteio->tam;        
-            if (verificar(listas_dos_participantes_do_sorteio,lista_de_sorteados,cont)==true)
-            {
-            lista_de_inscritos *nome=pos(listas_dos_participantes_do_sorteio,cont);
-            adicionar_inscritos(lista_de_sorteados,nome->nome,nome->email,nome->num_de_ins);
-            }
-        }
-        lista_de_inscritos *p=v(listas_dos_participantes_do_sorteio,lista_de_sorteados);
-        adicionar_inscritos(lista_de_sorteados,p->nome,p->email,p->num_de_ins);
-    }
-    else if (listas_dos_participantes_do_sorteio->tam==3)
+void sorteados(descritor_de_participantes *listas_dos_participantes_do_sorteio,descritor_de_participantes *lista_de_sorteados){
+    if (listas_dos_participantes_do_sorteio->tam==3)
     {   srand(time(NULL));
         while (lista_de_sorteados->tam<2)
         {
             int cont=rand()%listas_dos_participantes_do_sorteio->tam;        
-            if (verificar(listas_dos_participantes_do_sorteio,lista_de_sorteados,cont)==true)
+            if (verificar_sortei(listas_dos_participantes_do_sorteio,lista_de_sorteados,cont)==true)
             {
-            lista_de_inscritos *nome=pos(listas_dos_participantes_do_sorteio,cont);
-            adicionar_inscritos(lista_de_sorteados,nome->nome,nome->email,nome->num_de_ins);
+            lista_de_participantes *nome=pos(listas_dos_participantes_do_sorteio,cont);
+            adicionar_inscricao(lista_de_sorteados,nome->nome,nome->email,nome->numero_de_inscricao);
             }
         }
-        lista_de_inscritos *p=v(listas_dos_participantes_do_sorteio,lista_de_sorteados);
-        adicionar_inscritos(lista_de_sorteados,p->nome,p->email,p->num_de_ins);
+        lista_de_participantes *p=v(listas_dos_participantes_do_sorteio,lista_de_sorteados);
+        adicionar_inscricao(lista_de_sorteados,p->nome,p->email,p->numero_de_inscricao);
     }
     else{
         srand(time(NULL));
         while (lista_de_sorteados->tam<3){
-        int cont=rand()%listas_dos_participantes_do_sorteio->tam;        
-        if (verificar(listas_dos_participantes_do_sorteio,lista_de_sorteados,cont)==true)
+        int count=rand()%listas_dos_participantes_do_sorteio->tam;        
+        if (verificar_sortei(listas_dos_participantes_do_sorteio,lista_de_sorteados,count)==true)
         {
-            lista_de_inscritos *nome=pos(listas_dos_participantes_do_sorteio,cont);
-            adicionar_inscritos(lista_de_sorteados,nome->nome,nome->email,nome->num_de_ins);
+            lista_de_participantes *nome=pos(listas_dos_participantes_do_sorteio,count);
+            adicionar_inscricao(lista_de_sorteados,nome->nome,nome->email,nome->numero_de_inscricao);
         }
         }  
     }
 }
 
-void mostrar(descritor_inscritos *lista){
-    lista_de_inscritos *aux=lista->ini;
-    int pos=1;
-    while (aux!=NULL)
-    {
-        cout<<pos<<"° "<<aux->nome<<endl;
-        aux=aux->prox;
-        pos++;
-    }
-    cout<<endl;
+void mostrar(descritor_de_participantes *lista_dos_sorteados){
+	lista_de_participantes *aux=lista_dos_sorteados->ini;
+	while (aux!=NULL)
+	{
+		cout<<aux->nome<<endl;
+		aux=aux->prox;
+	}
 }
 
-int main(){
-    descritor_inscritos *listas_dos_inscritos=criar_lista_de_insc();
-    string nome;
-    string email;
-    int numero_da_incrisao=0;
-    while (nome!="fim")
-    {
-        cout<<"digite seu nome caso deseja parar de inseriri nomes digite fim\ndigite seu nome: ";
-        cin>>nome;
-        if (nome!="fim")
-        {
-            cout<<"digite seu email: ";
-            cin>>email;
-            numero_da_incrisao+=1;
-            adicionar_inscritos(listas_dos_inscritos,nome,email,numero_da_incrisao);
-        }
-    }
-
-    descritos_atividades *lista_das_atividades=criar_lista_de_ativid();
-    string atividade;
-    string tipo_da_ativida;
-    float hora_da_atividade;
-    int dia_da_atividade;
-    while (atividade!="fim")
-    {
-        cout<<"digite o nome da atividade caso deseja parar de inseriri nomes de atividades digite fim\ndigite o nome da atividade: ";
-        cin>>atividade;
-        if (atividade!="fim")
-        {
-            cout<<"digite o tipo da atividade "<<atividade<<": ";
-            cin>>tipo_da_ativida;
-            cout<<"caso a hora tenha minutos coloque um (.) para dividir os minutos das horas\ndigite a hora que inicia a atividade "<<atividade<<": ";
+int main() {
+	descritor_de_participantes *lista_de_inscricao=criar_lista_de_participantes();
+	string nome;
+	string email;
+	int numero_de_inscricao=0;
+	while(nome!="fim"){
+		cout<<"digite seu nome caso deseja parar de inseriri nomes digite fim\ndigite seu nome: ";
+		cin>>nome;
+		if(nome!="fim"){
+			cout<<"digite seu email: ";
+			cin>>email;
+			numero_de_inscricao+=1;
+			adicionar_inscricao(lista_de_inscricao,nome,email,numero_de_inscricao);
+		}
+	}
+	descritor_de_ativades *lista_das_atividades=criar_lista_de_atividades();
+	string nome_da_atividade;
+	string tipo_da_atividade;
+	float hora_da_atividade;
+	string data_da_atividade;
+	while(nome_da_atividade!="fim"){
+		cout<<"digite o nome da atividade caso deseja parar de inseriri nomes de atividades digite fim\ndigite o nome da atividade: ";
+        cin>>nome_da_atividade;
+        if(nome_da_atividade!="fim"){
+        	cout<<"digite o tipo da atividade: ";
+        	cin>>tipo_da_atividade;
+        	cout<<"caso a hora tenha minutos coloque um (.) para dividir os minutos das horas\ndigite a hora que inicia a atividade "<<nome_da_atividade<<": ";
             cin>>hora_da_atividade;
-            cout<<"digite o dia que ira ocorrer a atividade"<<atividade<<": ";
-            cin>>dia_da_atividade;
-            adicionar_atividades(lista_das_atividades,atividade,tipo_da_ativida,hora_da_atividade,dia_da_atividade);
-        }
-    }
-    bool **matriz=criar_matriz(listas_dos_inscritos,lista_das_atividades);
-    adicionar_presenca(matriz,listas_dos_inscritos,lista_das_atividades);
-    descritor_inscritos *listas_dos_participantes_do_sorteio=porcetagem_de_preseca(matriz,listas_dos_inscritos,lista_das_atividades);
-    descritor_inscritos *lista_de_sorteados=criar_lista_de_insc();
-    add_sorteados(listas_dos_participantes_do_sorteio,lista_de_sorteados);
-    mostrar(lista_de_sorteados);
-    return 0;
+			cout<<"digite a data da atividade"<<nome_da_atividade<<": ";
+			cin>>data_da_atividade;
+			adicioanr_atividade(lista_das_atividades,nome_da_atividade,tipo_da_atividade,hora_da_atividade,data_da_atividade);
+		}
+	}
+	bool **matriz_de_presenca=criar_matriz(lista_de_inscricao,lista_das_atividades);
+	adicionar_presenca(matriz_de_presenca,lista_de_inscricao,lista_das_atividades);
+	descritor_de_participantes *lista_dos_participantes_do_sorteio=verificar_os_participantes_do_sortei(matriz_de_presenca,lista_de_inscricao,lista_das_atividades);
+	if (validar_o_sorteio(lista_dos_participantes_do_sorteio)==false)
+	{
+		cout<<"o sorteio não ocorrerar pois o numero de participantes e insuficiente";
+	}
+	else{
+		descritor_de_participantes *lista_dos_sorteados=criar_lista_de_participantes();
+		sorteados(lista_dos_participantes_do_sorteio,lista_dos_sorteados);
+		mostrar(lista_dos_sorteados);
+	}
+	return 0;
 }
